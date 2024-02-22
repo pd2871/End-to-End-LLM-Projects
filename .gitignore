@@ -3,5 +3,11 @@ LLM Project.txt
 *.csv
 *.xlsx
 *.db
+*.json
 *.pdf
+*.doc
 *.docx
+*.pt
+*.h5
+__pycache__
+.ipynb_checkpoints
