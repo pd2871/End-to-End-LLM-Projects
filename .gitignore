@@ -8,6 +8,7 @@ LLM Project.txt
 *.doc
 *.docx
 *.pt
+*.pth
 *.h5
 __pycache__
 .ipynb_checkpoints
