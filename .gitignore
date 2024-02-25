@@ -10,5 +10,8 @@ LLM Project.txt
 *.pt
 *.pth
 *.h5
+*.jpg
+*.png
+*.jpeg
 __pycache__
 .ipynb_checkpoints
