@@ -13,5 +13,7 @@ LLM Project.txt
 *.jpg
 *.png
 *.jpeg
+.env.example
+.env
 __pycache__
 .ipynb_checkpoints
