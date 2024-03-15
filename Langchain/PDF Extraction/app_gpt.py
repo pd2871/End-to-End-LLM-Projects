@@ -10,7 +10,13 @@ from langchain_community.chat_models import ChatOpenAI
 from langchain_community.vectorstores import FAISS
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
+#provide key
 open_ai_key = ""
+if open_ai_key == '':
+    try:
+        open_ai_key = os.environ['OPENAI_API_KEY']
+    except:
+        pass
 openai.api_key = open_ai_key
 os.environ['OPENAI_API_KEY'] = open_ai_key
 

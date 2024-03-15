@@ -1,6 +1,8 @@
 
 import os, openai
-import warnings, bs4
+from typing import List
+import warnings
+from PyPDF2 import PdfReader
 warnings.filterwarnings("ignore")
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain_community.chat_models import ChatOpenAI
@@ -11,27 +13,38 @@ from langchain_core.messages import HumanMessage
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import WebBaseLoader
+from langchain.text_splitter import CharacterTextSplitter
 
-
+#provide key
 open_ai_key = ""
+if open_ai_key == '':
+    try:
+        open_ai_key = os.environ['OPENAI_API_KEY']
+    except:
+        pass
+    
 openai.api_key = open_ai_key
 os.environ['OPENAI_API_KEY'] = open_ai_key
     
     
-def main(url_path, prompt, chat_history):
-    bs_strainer = bs4.SoupStrainer(class_=("post-content", "post-title", "post-header"))
-    loader = WebBaseLoader(
-        web_paths=(url_path,),
-        bs_kwargs={"parse_only": bs_strainer},
+def main(pdf_path, prompt, chat_history):
+    pdf_reader = PdfReader(pdf_path)
+    text = ""
+    for page in pdf_reader.pages:
+        text += page.extract_text()
+    
+    # split into chunks
+    text_splitter = CharacterTextSplitter(
+    separator="\n",
+    chunk_size=1000,
+    chunk_overlap=200,
+    length_function=len
     )
-    docs = loader.load()
+    chunks = text_splitter.split_text(text)
     
     # Index documents into search engine
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-    splits = text_splitter.split_documents(docs)
-    vector_db = FAISS.from_documents(documents=splits, embedding=OpenAIEmbeddings())
+    embeddings = OpenAIEmbeddings()
+    vector_db = FAISS.from_texts(chunks, embeddings)
     
     llm = ChatOpenAI(
         model="gpt-4", temperature=0,
@@ -93,5 +106,5 @@ if __name__ == '__main__':
     
     while True:
         prompt = str(input("User: "))
-        chat_history = main(os.path.join('https://lilianweng.github.io/posts/2023-06-23-agent/'), prompt, chat_history)
+        chat_history = main(os.path.join('9cf7eda3-full.pdf'), prompt, chat_history)
     

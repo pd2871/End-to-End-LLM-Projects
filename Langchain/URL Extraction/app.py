@@ -12,7 +12,13 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+#provide key
 open_ai_key = ""
+if open_ai_key == '':
+    try:
+        open_ai_key = os.environ['OPENAI_API_KEY']
+    except:
+        pass
 openai.api_key = open_ai_key
 os.environ['OPENAI_API_KEY'] = open_ai_key
 
