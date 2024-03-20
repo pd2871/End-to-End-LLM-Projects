@@ -6,19 +6,19 @@ warnings.filterwarnings("ignore")
 from langchain.chains import RetrievalQA
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain_community.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_community.vectorstores import FAISS
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 #provide key
-open_ai_key = ""
-if open_ai_key == '':
-    try:
-        open_ai_key = os.environ['OPENAI_API_KEY']
-    except:
-        pass
-openai.api_key = open_ai_key
-os.environ['OPENAI_API_KEY'] = open_ai_key
+openai_api_key = ""
+# if openai_api_key == '':
+#     try:
+#         openai_api_key = os.environ['openai_api_key']
+#     except:
+#         pass
+openai.api_key = openai_api_key
+os.environ['openai_api_key'] = openai_api_key
 
 
 def main(pdf_path, prompt):
@@ -40,7 +40,7 @@ def main(pdf_path, prompt):
     embeddings = OpenAIEmbeddings()
     vector_db = FAISS.from_texts(chunks, embeddings)
     
-    llm = ChatOpenAI(
+    llm = ChatOpenAI(openai_api_key=openai_api_key,
         model="gpt-4", temperature=0,
     )
     

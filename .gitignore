@@ -16,4 +16,5 @@ LLM Project.txt
 .env.example
 .env
 __pycache__
+credentials.py
 .ipynb_checkpoints
