@@ -7,7 +7,14 @@
 
 
 <h5> Before running the file, create credentials.py file and create these variables inside that file </h5>
+
 ```
 openai_api_key=''
 model_name="gpt-4"
+```
+
+<h5> Run using this command:</h5>
+
+```
+uvicorn run:app
 ```
