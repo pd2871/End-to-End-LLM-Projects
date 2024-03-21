@@ -33,7 +33,7 @@ def set_custom_prompt():
 
 def load_llm_embeddings():
     llm = CTransformers(
-    model="TheBloke/Llama-2-7B-Chat-GGML",
+    model="TheBloke/Llama-2-7B-Chat-GGUF",
     model_type="llama",
     config={'max_new_tokens': 2048,
                             'temperature': 0,
