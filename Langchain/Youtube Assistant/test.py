@@ -1,15 +1,13 @@
 from credentials import openai_api_key, model_name
 from tools import ImageDescriberTool
 import os
-from langchain import hub
 from langchain_core.prompts import PromptTemplate
-from langchain.agents import AgentExecutor, create_openai_tools_agent
+from langchain.agents import AgentExecutor, create_openai_tools_agent, create_structured_chat_agent
 from langchain_openai import ChatOpenAI
 from langchain_community.tools import YouTubeSearchTool
-from langchain_core.messages import AIMessage, HumanMessage
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 
-tools = [YouTubeSearchTool()]  #, ImageDescriberTool()
+tools = [YouTubeSearchTool(), ImageDescriberTool()]  #, ImageDescriberTool()
 
 prompt = PromptTemplate(
     input_variables=[
@@ -25,11 +23,12 @@ prompt = PromptTemplate(
         Previous conversation:
         {chat_history}
 
+
         Begin!
 
         User Question: {user_question}
         Image Path: {image_path}
-        Thought:{agent_scratchpad}
+        Thought: {agent_scratchpad}
         Human Input: {human_input}
         '''
     )
@@ -47,30 +46,20 @@ memory = ConversationBufferWindowMemory(
 llm = ChatOpenAI(
     openai_api_key=openai_api_key,
     temperature=0,
-    model_name='gpt-3.5-turbo'
+    model_name=model_name
 )
 
 # Construct the OpenAI Tools agent
 openai_agent = create_openai_tools_agent(llm, tools, prompt)
 
-agent = AgentExecutor(agent=openai_agent, tools=tools, verbose=True, memory=memory)
-# agent.invoke({"user_question": 'Hello?',
-#                                     "image_path": '',
-#                                     'human_input': '',
-#                                     "chat_history": [
-#                                                         HumanMessage(content="hi! how are you?"),
-#                                                         AIMessage(content="Hello user! I am fine. How can I assist you today?"),
-#                                                         ],})
-#Who is lex fridman, describe him and Give useful youtube links related to lex fridman.
+agent = AgentExecutor(agent=openai_agent, tools=tools, verbose=True, memory=memory, handle_parsing_errors=True,
+                                           max_iterations=2)
+
 while True:
     promp = input("Ask questions: ")
     response = agent.invoke({"user_question": promp,
                                     "image_path": '',
-                                    'human_input': '',
-                                    "chat_history": [
-                                                        HumanMessage(content="hi! how are you?"),
-                                                        AIMessage(content="Hello user! I am fine. How can I assist you today?"),
-                                                        ],})
+                                    'human_input': ''})
 
     print("Response", response['output'])
 
