@@ -56,7 +56,9 @@ def main(pdf_path, prompt):
 
 
 if __name__ == '__main__':
+    pdf_dir = str(input("Enter PDF path: "))
+    print()
     while True:
         prompt = str(input("User: "))
-        main(os.path.join('9cf7eda3-full.pdf'), prompt)
+        main(pdf_dir, prompt)
     
