@@ -47,7 +47,7 @@ def main(pdf_path, prompt, chat_history):
     vector_db = FAISS.from_texts(chunks, embeddings)
     
     llm = ChatOpenAI(
-        model="gpt-4", temperature=0,
+        model="gpt-4-1106-preview", temperature=0,
     )
     
     # RAG Chain
