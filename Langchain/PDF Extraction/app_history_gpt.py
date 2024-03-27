@@ -1,4 +1,4 @@
-
+from credentials import openai_api_key
 import os, openai
 from typing import List
 import warnings
@@ -15,16 +15,15 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 
-#provide key
-open_ai_key = ""
-if open_ai_key == '':
+
+if openai_api_key == '':
     try:
-        open_ai_key = os.environ['OPENAI_API_KEY']
+        openai_api_key = os.environ['OPENAI_API_KEY']
     except:
         pass
     
-openai.api_key = open_ai_key
-os.environ['OPENAI_API_KEY'] = open_ai_key
+openai.api_key = openai_api_key
+os.environ['OPENAI_API_KEY'] = openai_api_key
     
     
 def main(pdf_path, prompt, chat_history):
