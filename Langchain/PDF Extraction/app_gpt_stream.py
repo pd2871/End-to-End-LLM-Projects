@@ -93,7 +93,7 @@ def create_retriever_chain(pdf_path):
 
 def main(chain, prompt):
     response = chain.invoke(prompt)  #get response from GPT
-    print("Assistant: ", response['result'])
+    # print("Assistant: ", response['result'])
     print()
     print()
 
