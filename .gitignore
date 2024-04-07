@@ -17,4 +17,5 @@ LLM Project.txt
 .env
 __pycache__
 credentials.py
+lora_model
 .ipynb_checkpoints
