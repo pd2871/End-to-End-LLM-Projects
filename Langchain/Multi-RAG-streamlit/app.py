@@ -66,5 +66,5 @@ if openai_api_key and file:
                 ai_response = rag_chain.invoke(prompt)['result']
                 st.write(ai_response)
                 # rag_chain.stream({'query':prompt}))
-                st.session_state['chat_history'].append(AIMessage(ai_response))
+            st.session_state['chat_history'].append(AIMessage(ai_response))
     
