@@ -16,11 +16,16 @@ st.set_page_config(page_title='RAG - Q&A Bot', page_icon='🔗')
 st.title("Chat with PDF, Excel or CSV - 📚🚀")
 
 openai_api_key = st.sidebar.text_input("Enter your OpenAI GPT-4 API key", placeholder='OpenAI GPT-4 API Key...')
+model_name = st.sidebar.selectbox(
+    "Model Name",
+    ("gpt-3.5-turbo", "gpt-4-1106-preview", "gpt-4-turbo"))
 file = st.sidebar.file_uploader("Upload File")
 
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
-                
+    st.session_state['chat_history'].append(AIMessage("Hello ! Ask me about your uploaded files 🤗"))
+           
+           
 #write history
 for message in st.session_state['chat_history']:
     if isinstance(message, HumanMessage):
@@ -43,13 +48,13 @@ if openai_api_key and file:
                                             return_messages=True
                                             )
     # st.session_state['file'] = file
-    chain = Chain(file, openai_api_key, st.session_state['memory'])
+    chain = Chain(file, openai_api_key, model_name, st.session_state['memory'])
     rag_chain = chain.create_chain()
     if rag_chain is None:
         st.sidebar.error('Error: Upload only PDF, Excel or CSV file', icon="🚨")   
     else:
-        with st.chat_message("assistant"):
-            st.write("Hello ! Ask me about your uploaded files 🤗")
+        # with st.chat_message("assistant"):
+        #     st.write("Hello ! Ask me about your uploaded files 🤗")
             
         prompt = st.chat_input("Ask about your PDF, CSV or Excel data 🧮")
         if prompt:
@@ -58,7 +63,8 @@ if openai_api_key and file:
                 st.markdown(prompt)
                 
             with st.chat_message("assistant"):
-                ai_response = st.write(rag_chain.invoke(prompt)['result'])
+                ai_response = rag_chain.invoke(prompt)['result']
+                st.write(ai_response)
                 # rag_chain.stream({'query':prompt}))
-            # st.session_state['chat_history'].append(AIMessage(ai_response))
+                st.session_state['chat_history'].append(AIMessage(ai_response))
     
