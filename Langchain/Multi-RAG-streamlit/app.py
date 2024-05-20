@@ -1,6 +1,6 @@
 
 from chains import Chain
-import shutil, os
+import shutil, os, asyncio
 import streamlit as st
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain_core.messages import HumanMessage, AIMessage
@@ -20,7 +20,7 @@ file = st.sidebar.file_uploader("Upload File")
 
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
-    
+                
 #write history
 for message in st.session_state['chat_history']:
     if isinstance(message, HumanMessage):
@@ -58,6 +58,7 @@ if openai_api_key and file:
                 st.markdown(prompt)
                 
             with st.chat_message("assistant"):
-                ai_response = st.write_stream(rag_chain.stream(prompt))
-            st.session_state['chat_history'].append(AIMessage(ai_response))
+                ai_response = st.write(rag_chain.invoke(prompt)['result'])
+                # rag_chain.stream({'query':prompt}))
+            # st.session_state['chat_history'].append(AIMessage(ai_response))
     

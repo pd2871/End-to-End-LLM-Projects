@@ -1,7 +1,7 @@
 
 from credentials import model_name
 import os, openai, shutil
-import warnings, tempfile
+import warnings, tempfile, asyncio
 warnings.filterwarnings("ignore")
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
@@ -57,7 +57,7 @@ class Chain:
             loader = UnstructuredExcelLoader(file_path=self.file_path, mode="elements")
             data = loader.load()
         return data
-    
+            
     def create_chain(self):
         os.makedirs('data', exist_ok=True)
         with open(os.path.join('data', self.file_name), mode='wb') as tmp_file:
@@ -86,6 +86,7 @@ class Chain:
                                                                             "prompt": self.prompt,
                                                                             "memory": self.memory
                                                                             })
+        
         return chain
     
     
