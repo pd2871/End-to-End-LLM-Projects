@@ -9,8 +9,6 @@ from langchain_core.messages import HumanMessage, AIMessage
 #     result = chain.invoke(query)
 #     return result["result"]
 
-def ask_question(chain, query):
-    return chain.stream(query)
 
 st.set_page_config(page_title='RAG - Q&A Bot', page_icon='🔗')
 st.title("Chat with PDF, Excel or CSV - 📚🚀")
@@ -54,6 +52,6 @@ if openai_api_key and file:
                 st.markdown(prompt)
                 
             with st.chat_message("assistant"):
-                ai_response = st.write_stream(ask_question(rag_chain, prompt))
+                ai_response = st.write_stream(rag_chain.stream(prompt))
             st.session_state['chat_history'].append(AIMessage(ai_response))
     
