@@ -15,7 +15,7 @@ os.makedirs('data', exist_ok=True)
 st.set_page_config(page_title='RAG - Q&A Bot', page_icon='🔗')
 st.title("Chat with PDF, Excel or CSV - 📚🚀")
 
-openai_api_key = st.sidebar.text_input("Enter your OpenAI GPT-4 API key", placeholder='OpenAI GPT-4 API Key...')
+openai_api_key = st.sidebar.text_input("Enter your OpenAI API key", placeholder='OpenAI GPT-4 API Key...')
 model_name = st.sidebar.selectbox(
     "Model Name",
     ("gpt-3.5-turbo", "gpt-4-1106-preview", "gpt-4-turbo"))
