@@ -59,11 +59,11 @@ class Chain:
         return data
     
     def create_chain(self):
-        with tempfile.TemporaryDirectory()(dir='.', suffix='.'+self.file_name.split('.')[-1], mode='wb') as tmp_file:
-            with open(f'files/temp.file', 'w') as f:
-                f.write('success')
+        os.makedirs('data', exist_ok=True)
+        with open(os.path.join('data', self.file_name), mode='wb') as tmp_file:
             tmp_file.write(self.file_path.getvalue())
             tmp_file_path = tmp_file.name
+            print("TMP FILE: ", tmp_file_path)
             if self.file_name.endswith('.pdf'):
                 data = self.pdf_loader(tmp_file_path)
             elif tmp_file_path.endswith('.csv') or tmp_file_path.endswith('.xlsx'):

@@ -1,0 +1,6 @@
+langchain
+langchain_community
+langchain_openai
+faiss-cpu
+langchain_core
+streamlit

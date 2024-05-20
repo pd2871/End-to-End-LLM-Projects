@@ -1,6 +1,6 @@
 
 from chains import Chain
-import shutil
+import shutil, os
 import streamlit as st
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain_core.messages import HumanMessage, AIMessage
@@ -8,6 +8,8 @@ from langchain_core.messages import HumanMessage, AIMessage
 # def ask_question(chain, query):
 #     result = chain.invoke(query)
 #     return result["result"]
+
+os.makedirs('data', exist_ok=True)
 
 
 st.set_page_config(page_title='RAG - Q&A Bot', page_icon='🔗')
@@ -29,6 +31,10 @@ for message in st.session_state['chat_history']:
             st.markdown(message.content)
     
 if openai_api_key and file:
+    try:
+        shutil.rmtree('data')
+    except:
+        pass
     if 'memory' not in st.session_state:
         st.session_state['memory'] = ConversationBufferWindowMemory(
                                             memory_key='history',
