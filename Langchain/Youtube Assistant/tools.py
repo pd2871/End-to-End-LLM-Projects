@@ -1,6 +1,7 @@
 from credentials import openai_api_key
 import base64
 from time import sleep
+from textwrap import dedent
 from langchain.tools import BaseTool
 from langchain_openai import ChatOpenAI
 from langchain.schema.messages import HumanMessage, AIMessage
@@ -20,8 +21,8 @@ def encode_image(image_path):
 #tool to describe the image
 class ImageDescriberTool(BaseTool):
     name = "ImageDescriber"
-    description = "Use this tool when given the image path that needs to be described. " \
-                  "It will return texts describing the image from the given image path."
+    description = dedent("""Use this tool when given the image path that needs to be described. 
+                  It will return texts describing the image from the given image path.""")
 
     def _run(self, image_path):
         image = encode_image(image_path)
